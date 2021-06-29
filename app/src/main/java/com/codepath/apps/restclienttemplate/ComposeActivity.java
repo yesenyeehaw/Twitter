@@ -4,14 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONException;
 import org.parceler.Parcels;
@@ -27,7 +31,6 @@ public class ComposeActivity extends AppCompatActivity {
     public static final int MAX_TWEET_LENGTH = 280;
     EditText etCompose;
     Button btnTweet;
-
     TwitterClient client;
 
     @Override
@@ -38,6 +41,7 @@ public class ComposeActivity extends AppCompatActivity {
         client = TwitterApp.getRestClient(this);
         etCompose = findViewById(R.id.etCompose);
         btnTweet = findViewById(R.id.btnTweet);
+
 
         //Set a click listener on button
         btnTweet.setOnClickListener(new View.OnClickListener() {
@@ -50,10 +54,12 @@ public class ComposeActivity extends AppCompatActivity {
                     return;
                 }
                 // if tweet content is too long
-                if (tweetContent.length() > MAX_TWEET_LENGTH){
+                if (tweetContent.length() > MAX_TWEET_LENGTH) {
                     Toast.makeText(ComposeActivity.this, "Sorry, your tweet is too long!", Toast.LENGTH_LONG).show();
                     return;
                 }
+
+
                 Toast.makeText(ComposeActivity.this, tweetContent, Toast.LENGTH_LONG).show();
                 //Make an API call to Twitter publish the tweet - CRUD data
                 client.publishTweet(tweetContent, new JsonHttpResponseHandler() {
@@ -72,7 +78,6 @@ public class ComposeActivity extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
                     }
 
                     @Override
