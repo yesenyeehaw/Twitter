@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate.models;
 
 import android.text.format.DateUtils;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,6 +18,7 @@ import java.util.Locale;
 public class Tweet {
     public String body;
     public String createdAt;
+    public String image;
     public User user;
 //Empty constructor needed to use Parcel
     public Tweet(){}
@@ -26,6 +28,14 @@ public class Tweet {
         tweet.body = jsonObject.getString("text");
         tweet.createdAt =  jsonObject.getString("created_at");
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
+        tweet.image = "";
+
+        //Getting tweet image
+        if(jsonObject.getJSONObject("entities").has("media")) {
+            JSONArray media = jsonObject.getJSONObject("entities").getJSONArray("media");
+            //Showing only the first image entity provided
+            tweet.image = media.getJSONObject(0).getString("media_url_https");
+        }
         return tweet;
     }
 
@@ -34,6 +44,7 @@ public class Tweet {
         for ( int i = 0; i < jsonArray.length(); i++){
             tweets.add(fromJson(jsonArray.getJSONObject(i)));
         }
+
         return tweets;
     }
 

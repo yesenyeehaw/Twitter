@@ -3,6 +3,7 @@ package com.codepath.apps.restclienttemplate;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.apps.restclienttemplate.models.User;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
@@ -36,20 +38,19 @@ public class ComposeActivity extends AppCompatActivity {
     TwitterClient client;
     ImageView ivProfile;
     TextView tvUsername;
-    Tweet tweet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose);
-
         client = TwitterApp.getRestClient(this);
         etCompose = findViewById(R.id.etCompose);
         btnTweet = findViewById(R.id.btnTweet);
         ivProfile = findViewById(R.id.ivProfile);
         tvUsername = findViewById(R.id.tvUsername);
 
-        tvUsername.setText(User.currentUser.screenName);
+        tvUsername.setText("@" + User.currentUser.screenName);
+        Glide.with(this).load(User.currentUser.profileImageUrl).into(ivProfile);;
 
         //Set a click listener on button
         btnTweet.setOnClickListener(new View.OnClickListener() {
