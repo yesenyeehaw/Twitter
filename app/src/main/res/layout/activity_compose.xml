@@ -1,22 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#0203A9F4"
     tools:context=".ComposeActivity">
+
+    <ImageView
+        android:id="@+id/ivProfile"
+        android:layout_width="114dp"
+        android:layout_height="114dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="1"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tvUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="100dp"
+        android:layout_toEndOf="@+id/ivProfile"
+        android:text="TextView" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/counter"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="193dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="377dp"
         app:counterEnabled="true"
         app:counterMaxLength="280">
+
         <EditText
             android:id="@+id/etCompose"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="108dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginStart="5dp"
@@ -25,14 +49,19 @@
             android:gravity="start|top"
             android:inputType="textMultiLine"
             android:minLines="5" />
+
         <Button
             android:id="@+id/btnTweet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/etCompose"
             android:layout_alignParentEnd="true"
+            android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="5dp"
+            android:background="#03A9F4"
             android:text="@string/tweet" />
+
     </com.google.android.material.textfield.TextInputLayout>
+
 </RelativeLayout>

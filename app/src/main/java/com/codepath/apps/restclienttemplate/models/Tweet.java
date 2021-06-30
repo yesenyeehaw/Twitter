@@ -20,6 +20,7 @@ public class Tweet {
     public User user;
 //Empty constructor needed to use Parcel
     public Tweet(){}
+
     public static Tweet fromJson(JSONObject jsonObject) throws JSONException {
         Tweet tweet = new Tweet();
         tweet.body = jsonObject.getString("text");

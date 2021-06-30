@@ -9,10 +9,17 @@ import android.view.View;
 
 import com.codepath.apps.restclienttemplate.models.SampleModel;
 import com.codepath.apps.restclienttemplate.models.SampleModelDao;
+import com.codepath.apps.restclienttemplate.models.User;
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.codepath.oauth.OAuthLoginActionBarActivity;
+
+import org.json.JSONException;
+
+import okhttp3.Headers;
 
 public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 
+	public static final String TAG = "LoginActivity";
 	SampleModelDao sampleModelDao;
 	
 	@Override
@@ -45,10 +52,25 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 	// i.e Display application "homepage"
 	@Override
 	public void onLoginSuccess() {
-		Log.i("hjfjhf", "login success");
-		//Timeline activity navigate
-		 Intent i = new Intent(this, TimelineActivity.class);
-		 startActivity(i);
+
+		getClient().verifyCredentials(new JsonHttpResponseHandler() {
+			@Override
+			public void onSuccess(int statusCode, Headers headers, JSON json) {
+				try {
+					User.currentUser = User.fromJson(json.jsonObject);
+					//Timeline activity navigate
+					Intent i = new Intent(LoginActivity.this, TimelineActivity.class);
+					startActivity(i);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+
+			@Override
+			public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+				Log.d(TAG, "Error: " + throwable.getMessage());
+			}
+		});
 	}
 
 	// OAuth authentication flow failed, handle the error

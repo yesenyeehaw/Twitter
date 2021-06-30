@@ -7,6 +7,7 @@ import org.parceler.Parcel;
 @Parcel
 public class User {
 
+    public static User currentUser;
     public String name;
     public String screenName;
     public String profileImageUrl;
