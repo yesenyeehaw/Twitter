@@ -33,23 +33,29 @@ public class ComposeActivity extends AppCompatActivity {
     public static final String TAG = "ComposeActivity";
 
     public static final int MAX_TWEET_LENGTH = 280;
+
     EditText etCompose;
     Button btnTweet;
     TwitterClient client;
     ImageView ivProfile;
     TextView tvUsername;
+    TextView tvMyName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_compose);
         client = TwitterApp.getRestClient(this);
         etCompose = findViewById(R.id.etCompose);
         btnTweet = findViewById(R.id.btnTweet);
         ivProfile = findViewById(R.id.ivProfile);
         tvUsername = findViewById(R.id.tvUsername);
+        tvMyName = findViewById(R.id.tvMyName);
 
         tvUsername.setText("@" + User.currentUser.screenName);
+        tvMyName.setText(User.currentUser.name);
+
         Glide.with(this).load(User.currentUser.profileImageUrl).into(ivProfile);;
 
         //Set a click listener on button
@@ -69,7 +75,7 @@ public class ComposeActivity extends AppCompatActivity {
                 }
 
 
-                Toast.makeText(ComposeActivity.this, tweetContent, Toast.LENGTH_LONG).show();
+                //Toast.makeText(ComposeActivity.this, tweetContent, Toast.LENGTH_LONG).show();
                 //Make an API call to Twitter publish the tweet - CRUD data
                 client.publishTweet(tweetContent, new JsonHttpResponseHandler() {
                     @Override

@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 
 import org.jetbrains.annotations.NotNull;
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -64,11 +66,23 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
-            ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
+            ivProfileImage = itemView.findViewById(R.id.ivProfileImg);
             tvBody = itemView.findViewById(R.id.tvBody);
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             tvRelativeDate = itemView.findViewById(R.id.tvRelativeDate);
             ivTwimage = itemView.findViewById(R.id.ivTwimage);
+
+            //Take us to viewDetailsActivity
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = getAdapterPosition();
+                    Tweet tweet = tweets.get(pos);
+                    Intent intent = new Intent(context, TweetDetails.class);
+                    intent.putExtra(Tweet.class.getName(), Parcels.wrap(tweet));
+                    context.startActivity(intent);
+                }
+            });
         }
 
         public void bind(Tweet tweet) {

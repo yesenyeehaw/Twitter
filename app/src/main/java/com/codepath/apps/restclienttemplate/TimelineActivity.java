@@ -37,6 +37,7 @@ public class TimelineActivity extends AppCompatActivity {
     private final int REQUEST_CODE = 20;
     private SwipeRefreshLayout swipeContainer;
 
+    static MenuItem miActionProgressItem;
 
     TwitterClient client;
     RecyclerView rvTweets;
@@ -48,7 +49,12 @@ public class TimelineActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
+        // Test DELETE ME
+        invalidateOptionsMenu();
+        supportInvalidateOptionsMenu();
+        miActionProgressItem = findViewById(R.id.miActionProgress);
 
+        // ---------------------------------------
 // Lookup the swipe container view
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         // Setup refresh listener which triggers new data loading
@@ -121,16 +127,35 @@ public class TimelineActivity extends AppCompatActivity {
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d(TAG, "In create menu");
         // Inflate the menu; this adds items to the action bar if it isn't present
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        Log.d(TAG, "In prep menu");
+        // Store instance of the menu item containing progress
+        miActionProgressItem = menu.findItem(R.id.miActionProgress);
+
+        // Return to finish
+        return super.onPrepareOptionsMenu(menu);
+    }
+    public void showProgressBar() {
+        // Show progress item
+        miActionProgressItem.setVisible(true);
+    }
+
+    public void hideProgressBar() {
+        // Hide progress item
+        miActionProgressItem.setVisible(false);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.compose){
             // Compose icon has been selected
-           // Toast.makeText(this,"Compose!", Toast.LENGTH_SHORT).show();
             //Navigate to the compose activity
             Intent intent = new Intent(this, ComposeActivity.class);
             startActivityForResult(intent, REQUEST_CODE); //this will launch the child activity
@@ -158,9 +183,11 @@ public class TimelineActivity extends AppCompatActivity {
     }
 
     private void populateHomeTimeline() {
+        Log.d(TAG, "In pop timeline");
         client.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
+                showProgressBar();
                 Log.i(TAG, "onSuccess!");
                 JSONArray jsonArray = json.jsonArray;
                 try{
@@ -170,6 +197,7 @@ public class TimelineActivity extends AppCompatActivity {
                     Log.e (TAG, "Json exception",e );
                     e.printStackTrace();
                 }
+                hideProgressBar();
             }
 
             @Override
